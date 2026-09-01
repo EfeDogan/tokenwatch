@@ -1,0 +1,66 @@
+.tw-panel-box {
+    spacing: 6px;
+}
+
+.tw-pct {
+    font-weight: 700;
+    font-size: 0.9em;
+}
+
+.tw-ok {
+    color: #57e389;
+}
+
+.tw-warn {
+    color: #f8e45c;
+}
+
+.tw-crit {
+    color: #ff7b72;
+}
+
+.tw-header {
+    font-weight: 700;
+}
+
+.tw-muted {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.9em;
+}
+
+.tw-status-warn {
+    color: #f8e45c;
+    font-size: 0.9em;
+}
+
+.tw-meter-name {
+    min-width: 84px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.tw-track {
+    width: 170px;
+    height: 9px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+.tw-fill {
+    height: 9px;
+    border-radius: 5px;
+    background-color: #57e389;
+}
+
+.tw-fill.tw-warn {
+    background-color: #f8e45c;
+}
+
+.tw-fill.tw-crit {
+    background-color: #ff7b72;
+}
+
+.tw-meter-value {
+    min-width: 104px;
+    text-align: right;
+    color: rgba(255, 255, 255, 0.85);
+}

@@ -1,0 +1,11 @@
+{
+  "uuid": "tokenwatch@efedogan",
+  "name": "TokenWatch",
+  "description": "Track AI coding subscription usage from the top panel: OpenCode, Claude and Codex session, weekly and monthly limits with reset countdowns in a clean popup. Credentials are read locally and only sent to the provider's own usage API.",
+  "url": "https://github.com/EfeDogan/tokenwatch",
+  "shell-version": ["50"],
+  "session-modes": ["user"],
+  "settings-schema": "org.gnome.shell.extensions.tokenwatch",
+  "version": 1,
+  "version-name": "1.0.0"
+}

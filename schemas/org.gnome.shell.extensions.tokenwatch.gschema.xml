@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <enum id="org.gnome.shell.extensions.tokenwatch.panel-position">
+    <value nick="left" value="0"/>
+    <value nick="center" value="1"/>
+    <value nick="right" value="2"/>
+  </enum>
+  <enum id="org.gnome.shell.extensions.tokenwatch.pin-metric">
+    <value nick="none" value="0"/>
+    <value nick="session" value="1"/>
+    <value nick="weekly" value="2"/>
+    <value nick="monthly" value="3"/>
+  </enum>
+  <schema id="org.gnome.shell.extensions.tokenwatch" path="/org/gnome/shell/extensions/tokenwatch/">
+    <key name="refresh-interval" type="u">
+      <default>300</default>
+      <summary>Refresh interval in seconds</summary>
+      <description>How often provider usage data is refreshed. Minimum is 60 seconds.</description>
+    </key>
+    <key name="panel-position" enum="org.gnome.shell.extensions.tokenwatch.panel-position">
+      <default>'right'</default>
+      <summary>Panel position</summary>
+      <description>Where the indicator is placed in the top bar.</description>
+    </key>
+    <key name="show-opencode" type="b">
+      <default>true</default>
+      <summary>Show OpenCode</summary>
+      <description>Track OpenCode Go usage.</description>
+    </key>
+    <key name="show-claude" type="b">
+      <default>true</default>
+      <summary>Show Claude</summary>
+      <description>Track Claude subscription usage.</description>
+    </key>
+    <key name="show-codex" type="b">
+      <default>true</default>
+      <summary>Show Codex</summary>
+      <description>Track Codex usage.</description>
+    </key>
+    <key name="pin-opencode" enum="org.gnome.shell.extensions.tokenwatch.pin-metric">
+      <default>'monthly'</default>
+      <summary>OpenCode pinned metric</summary>
+      <description>Metric shown next to the panel icon.</description>
+    </key>
+    <key name="pin-claude" enum="org.gnome.shell.extensions.tokenwatch.pin-metric">
+      <default>'weekly'</default>
+      <summary>Claude pinned metric</summary>
+      <description>Metric shown next to the panel icon.</description>
+    </key>
+    <key name="pin-codex" enum="org.gnome.shell.extensions.tokenwatch.pin-metric">
+      <default>'weekly'</default>
+      <summary>Codex pinned metric</summary>
+      <description>Metric shown next to the panel icon.</description>
+    </key>
+  </schema>
+</schemalist>
