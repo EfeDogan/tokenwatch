@@ -63,7 +63,7 @@ export async function fetchUsage(session, providerKey, credential, cancellable) 
     case 'claude':
         return fetchClaude(session, credential.token, cancellable);
     case 'codex':
-        return fetchCodex(session, credential.token, cancellable);
+        return fetchCodex(session, credential, cancellable);
     default:
         throw new ProviderError('not-logged-in');
     }
@@ -113,20 +113,28 @@ async function fetchClaude(session, token, cancellable) {
     return metrics;
 }
 
-async function fetchCodex(session, token, cancellable) {
+async function fetchCodex(session, credential, cancellable) {
+    const headers = {Authorization: `Bearer ${credential.token}`};
+    if (credential.accountId)
+        headers['ChatGPT-Account-Id'] = credential.accountId;
     const {status, json} = await fetchJson(session,
         'https://chatgpt.com/backend-api/wham/usage',
-        {Authorization: `Bearer ${token}`}, cancellable);
+        headers, cancellable);
     if (status !== 200)
         rejectHttp(status);
-    const limits = json?.rate_limits ?? json ?? {};
+    // The Codex API currently returns `rate_limit`; keep `rate_limits` for
+    // compatibility with older responses.
+    const limits = json?.rate_limit ?? json?.rate_limits ?? json ?? {};
     const metrics = {};
     const windows = [limits.primary_window, limits.secondary_window];
     for (const window of windows) {
         if (!window || typeof window !== 'object')
             continue;
         const pct = clampPercent(window.used_percent ?? window.usedPercent ?? window.percent);
-        const minutes = window.window_minutes ?? window.windowMinutes ?? null;
+        const minutes = window.window_minutes ?? window.windowMinutes ??
+            (typeof window.limit_window_seconds === 'number'
+                ? window.limit_window_seconds / 60
+                : null);
         const resetsAt = window.reset_at ?? window.resets_at ?? window.resetsAt ?? null;
         if (pct === null && resetsAt === null)
             continue;

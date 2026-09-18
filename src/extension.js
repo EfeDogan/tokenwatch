@@ -75,7 +75,13 @@ const STALE_MS = 30_000;
 const GaugeIcon = GObject.registerClass(
 class GaugeIcon extends St.DrawingArea {
     _init(params = {}) {
-        super._init({...params, width: 18, height: 16});
+        super._init({
+            ...params,
+            width: 18,
+            height: 18,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._repaintId = St.ThemeContext.get_for_stage(global.stage).connect(
             'notify::theme', () => this.queue_repaint());
     }

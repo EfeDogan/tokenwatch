@@ -73,14 +73,34 @@ function getClaude() {
 }
 
 function getCodex() {
-    const base = GLib.getenv('CODEX_HOME') ??
-        GLib.build_filenamev([GLib.get_home_dir(), '.codex']);
-    const data = readJsonFile(GLib.build_filenamev([base, 'auth.json']));
+    // CODEX_HOME can be set in a shell but not inherited by GNOME Shell. Try
+    // the explicit location first, then the CLI's default location and the
+    // XDG config location used by older installations.
+    const candidates = [];
+    const codexHome = GLib.getenv('CODEX_HOME');
+    if (codexHome)
+        candidates.push(GLib.build_filenamev([codexHome, 'auth.json']));
+    candidates.push(GLib.build_filenamev([GLib.get_home_dir(), '.codex', 'auth.json']));
+    const configHome = GLib.getenv('XDG_CONFIG_HOME');
+    if (configHome)
+        candidates.push(GLib.build_filenamev([configHome, 'codex', 'auth.json']));
+
+    const data = candidates.map(readJsonFile).find(value => {
+        if (!value || typeof value !== 'object')
+            return false;
+        return Boolean(firstString(value.tokens ?? {}, ['access_token', 'accessToken']) ??
+            firstString(value, ['access_token', 'accessToken', 'OPENAI_API_KEY']));
+    });
     if (!data || typeof data !== 'object')
         return {error: 'not-logged-in'};
-    const token = firstString(data.tokens ?? {}, ['access_token', 'accessToken']);
+    const token = firstString(data.tokens ?? {}, ['access_token', 'accessToken']) ??
+        firstString(data, ['access_token', 'accessToken']);
     if (token)
-        return {token};
+        return {
+            token,
+            accountId: firstString(data.tokens ?? {}, ['account_id', 'accountId']) ??
+                firstString(data, ['account_id', 'accountId']),
+        };
     if (firstString(data, ['OPENAI_API_KEY']))
         return {error: 'api-key-only'};
     return {error: 'not-logged-in'};
